@@ -3,6 +3,8 @@ use Moose;
 
 BEGIN { extends 'Catalyst::Engine::CGI' }
 
+our $VERSION = '0.01';
+
 sub finalize_headers {
     my ( $self, $c ) = @_;
     $c->response->header( Status => $c->response->status );

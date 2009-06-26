@@ -4,11 +4,11 @@ use SCGI;
 use SCGI::Request;
 use Catalyst::Engine::SCGI::PreFork::Handler;
 
-use constant DEBUG => 1;
+use constant DEBUG => 0;
 
 BEGIN { extends 'Net::Server::PreFork' }
 
-our $VERSION = '0.03';
+our $VERSION = '0.01';
 
 sub run {
     my ( $self, $class, $port, $detach ) = @_;
@@ -17,7 +17,7 @@ sub run {
     $self->{appclass} = $class;
     $self->{options} = $options;
        
-    # TODO dont hardwire these
+    # TODO dont hardcode these
     $port = 9999 unless defined $port;
     my $host = '*';
 
@@ -35,33 +35,6 @@ sub run {
         $extra{setsid} = $extra{background} = 1;
     }
 
-=for
-
-    my $socket = IO::Socket::INET->new(
-        Listen    => 5,
-        ReuseAddr => 1,
-        LocalPort => $port,
-    ) or die "cannot bind to port $port: $!";
-    $sock = SCGI->new( $socket, blocking => 1 )
-      or die "Failed to open SCGI socket; $!";
-
-    $self->daemon_fork()   if defined $detach;
-    $self->daemon_detach() if defined $detach;
-    while ( my $request = $sock->accept ) {
-        eval { $request->read_env };
-        if ($@) {
-
-            # some error
-        }
-        else {
-            $self->{_request} = $request;
-            $class->handle_request( env => $request->env );
-            # make sure to close once we are done.
-            $request->close();
-        }
-    }
-=cut
-
     $self->SUPER::run(
         port                       => $port || 3000,
         host                       => $host || '*',
@@ -78,19 +51,16 @@ sub run {
     );
 }
 
-sub post_accept_hook {
-    my $self = shift;
-    $self->{client} = {};
-}
-
 sub process_request {
     my ($self) = @_;
+
+    # create scgi request object from Net::Server client socket
     my $scgi = SCGI::Request->_new($self->{server}{client}, 1);
 
     eval { $scgi->read_env };
     if ($@) {
         # error
-        warn "ZOMG errorsz $@";
+        warn "ZOMG errorz $@";
     }
     else {
         $self->{appclass}->engine->{scgi} = $scgi;
@@ -100,6 +70,6 @@ sub process_request {
 }
 
 no Moose;
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 1;
