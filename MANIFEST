@@ -1,0 +1,9 @@
+Changes
+MANIFEST
+Makefile.PL
+README
+lib/Catalyst/Engine/SCGI/PreFork.pm
+lib/Catalyst/Engine/SCGI/PreFork/Handler.pm
+t/00-load.t
+t/pod-coverage.t
+t/pod.t
