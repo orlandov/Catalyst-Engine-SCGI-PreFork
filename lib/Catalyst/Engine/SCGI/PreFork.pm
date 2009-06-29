@@ -78,7 +78,8 @@ Catalyst::Engine::SCGI::PreFork - Pre-forking Catalyst engine
 
 =head1 SYNOPSIS
 
-    CATALYST_ENGINE=SCGI::PreFork script/myapp_server.pl [options] -- [SCGI::PreFork options]
+    CATALYST_ENGINE=SCGI::PreFork \
+        script/myapp_server.pl [options] -- [SCGI::PreFork options]
 
 =head1 DESCRIPTION
 
@@ -87,45 +88,47 @@ supports the SCGI 1 protocol.
 
 =head1 OPTIONS
 
-You may specify these options as command line parameters to your server launcher.
+You may specify these options as command line parameters to your server
+launcher. Additional options may be passed to the engine by modifying
+yourapp_server.pl to send additional items to the run() method.
 
 =head2 --min_server
 
 The minimum number of servers to keep running. Default is 5.
 
-=head2 min_spare_servers
+=head2 --min_spare_servers
 
 The minimum number of servers to have waiting for requests. Minimum and
 maximum numbers should not be set too close to each other or the server will
 fork and kill children too often.  Defaults to 2.
 
-=head2 max_spare_servers
+=head2 --max_spare_servers
 
 The maximum number of servers to have waiting for requests.  Defaults to 10.
 
-=head2 max_servers
+=head2 --max_servers
 
 The maximum number of child servers to start.  Defaults to 50.
 
-=head2 max_requests
+=head2 --max_requests
 
 Restart a child after it has served this many requests.  Defaults to 1000.
 Note that setting this value to 0 will not cause the child to serve unlimited
 requests.  This is a limitation of Net::Server and may be fixed in a future
 version.
 
-=head2 restart_graceful
+=head2 --restart_graceful
 
 This enables Net::Server's leave_children_open_on_hup option.  If set, the parent
 will not attempt to close child processes if the parent receives a SIGHUP.  Each
 child will exit as soon as possible after processing the current request if any.
 
-=head2 pidfile
+=head2 --pidfile
 
 This passes through to Net::Server's pid_file option.  If set, the pidfile is
 written to the path.  Default is none.  This file is not removed on server exit 
 
-=head2 background
+=head2 --background
 
 This option passes through to Net::Server and also sets the 'setsid' option to
 true.
@@ -137,7 +140,7 @@ Catalyst::Engine::SCGI.
 
 =head1 AUTHOR
 
-Orlando Vazquez C< <orlandov at cpan.org> >
+Orlando Vazquez <orlandov at cpan.org>
 
 =head1 COPYRIGHT
 
