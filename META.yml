@@ -1,5 +1,5 @@
 ---
-abstract: ~
+abstract: 'Pre-forking Catalyst engine'
 author:
   - 'Orlando Vazquez <orlandov@cpan.org>'
 build_requires:

@@ -130,7 +130,7 @@ written to the path.  Default is none.  This file is not removed on server exit
 This option passes through to Net::Server and also sets the 'setsid' option to
 true.
 
-=head1 AKNOWLEDGEMENTS
+=head1 ACKNOWLEDGEMENTS
 
 This engine is based heavily on Catalyst::Engine::HTTP::PreFork and
 Catalyst::Engine::SCGI.
